@@ -29,6 +29,52 @@ enum custom_keycodes {
   ADJUST,
 };
 
+enum {
+  TD_CTRL_CAPS = 0,
+  TD_SCLN,
+  TD_MINUS_CTLSPC,
+  TD_LPRN,
+  TD_RPRN,
+};
+
+//Send ; on Single Tap, : on Double Tap
+void dance_cln_finished (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    register_code (KC_SCLN);
+  } else {
+    register_code (KC_RSFT);
+    register_code (KC_SCLN);
+  }
+}
+
+void dance_cln_reset (qk_tap_dance_state_t *state, void *user_data) {
+  if (state->count == 1) {
+    unregister_code (KC_SCLN);
+  } else {
+    unregister_code (KC_RSFT);
+    unregister_code (KC_SCLN);
+  }
+}
+
+//Tap Dance Definitions
+qk_tap_dance_action_t tap_dance_actions[] = {
+  //Tap once for Esc, twice for Caps Lock
+  // [TD_CTRL_CAPS]  = ACTION_TAP_DANCE_DOUBLE(KC_LCTRL, KC_CAPS),
+  // Other declarations would go here, separated by commas, if you have them
+  [TD_SCLN] = ACTION_TAP_DANCE_FN_ADVANCED (NULL, dance_cln_finished, dance_cln_reset),
+  [TD_MINUS_CTLSPC]  = ACTION_TAP_DANCE_DOUBLE(KC_MINS, C(KC_SPC)),
+  [TD_LPRN]  = ACTION_TAP_DANCE_DOUBLE(KC_LBRC, KC_LPRN),
+  [TD_RPRN]  = ACTION_TAP_DANCE_DOUBLE(KC_RBRC, KC_RPRN),
+};
+
+//Tap Dance Abbrebiations
+enum {
+  TDCLN = TD(TD_SCLN),
+  TDMINS = TD(TD_MINUS_CTLSPC),
+  TDLPR = TD(TD_LPRN),
+  TDRPR = TD(TD_RPRN),
+};
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -38,21 +84,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | Tab  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  =   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |LCTRL |   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
+ * |LCTRL |   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |  ;/: |  '   |
  * |------+------+------+------+------+------|   [   |    |    ]  |------+------+------+------+------+------|
  * |LShift|   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |RShift|
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   | LAlt | LGUI |LOWER | /Space  /       \Enter \  |RAISE |BackSP|RCTRL |
+ *                   | LGUI | LAlt |LOWER | /Space  /       \Enter \  |RAISE |BackSP|RCTRL |
  *                   |      |      |      |/       /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
 
  [_QWERTY] = LAYOUT( \
-  KC_GESC,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, \
+  KC_GESC,  KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    TD(TD_MINUS_CTLSPC), \
   KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL, \
-  KC_LCTRL, KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
-  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_LBRC,  KC_RBRC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_RSFT, \
-                             KC_LALT, KC_LGUI,LOWER, KC_SPC,   KC_ENT,   RAISE,   KC_BSPC, KC_RCTRL \
+  KC_LCTRL, KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L,    TDCLN,   KC_QUOT, \
+  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, TDLPR,    TDRPR,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_RSFT, \
+                             KC_LGUI, KC_LALT, LOWER,KC_SPC,   KC_ENT,   RAISE,   KC_BSPC, KC_RCTRL \
 ),
 /* LOWER
  * ,-----------------------------------------.                    ,-----------------------------------------.
