@@ -202,6 +202,10 @@ const char *read_keylogs(void);
 // void set_timelog(void);
 // const char *read_timelog(void);
 
+
+void set_typecount(void);
+const char *read_typecount(void);
+
 void matrix_scan_user(void) {
    iota_gfx_task();
 }
@@ -211,6 +215,7 @@ void matrix_render_user(struct CharacterMatrix *matrix) {
     // If you want to change the display of OLED, you need to change here
     matrix_write_ln(matrix, read_layer_state());
     matrix_write_ln(matrix, read_keylog());
+    matrix_write_ln(matrix, read_typecount());
     // matrix_write_ln(matrix, read_keylogs());
     //matrix_write_ln(matrix, read_mode_icon(keymap_config.swap_lalt_lgui));
     //matrix_write_ln(matrix, read_host_led_state());
@@ -239,6 +244,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
 #ifdef SSD1306OLED
     set_keylog(keycode, record);
+    set_typecount();
 #endif
     // set_timelog();
   }
