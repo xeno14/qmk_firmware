@@ -203,7 +203,7 @@ const char *read_keylogs(void);
 // const char *read_timelog(void);
 
 
-void set_typecount(void);
+void set_typecount(uint16_t keycode, keyrecord_t *record);
 const char *read_typecount(void);
 
 void matrix_scan_user(void) {
@@ -244,7 +244,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
 #ifdef SSD1306OLED
     set_keylog(keycode, record);
-    set_typecount();
+    set_typecount(keycode, record);
 #endif
     // set_timelog();
   }
