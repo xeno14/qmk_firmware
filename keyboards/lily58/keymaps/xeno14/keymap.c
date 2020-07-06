@@ -26,7 +26,8 @@ extern uint8_t is_master;
 #define _AS_R LALT(LSFT(KC_RIGHT))
 #define _AS_U LALT(LSFT(KC_UP))
 #define _AS_D LALT(LSFT(KC_DOWN))
-#define _CS_B LCTL(LSFT(KC_B))
+#define _CA_B LCTL(LALT(KC_B))
+#define _SF_ENT LSFT(KC_ENTER)
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -116,7 +117,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|   {   |    |   }   |------+------+------+------+------+------|
  * |      |      |      |      |      |      |-------|    |-------|      |   =  |   +  |   <  |   >  |      |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |CtlAlt|      |      | /       /       \      \  |      |  Del |      |
+ *                   |CtlAlt|      |      | /       /       \SftEnt\  |      |  Del |      |
  *                   |      |      |      |/       /         \      \ |      |      |      |
  *                   `----------------------------'           '------''--------------------'
  */
@@ -125,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, KC_GRV,  _______, _______, _______, KC_F11,                    KC_F12, KC_PIPE, _______,  KC_PERC, KC_CIRC, KC_PIPE,\
   _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                   KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_DQT, \
   _______, _______, _______, _______, _______, _______, KC_LCBR, KC_RCBR, _______, KC_EQL, KC_PLUS, KC_LABK, KC_RABK, _______, \
-                       LCTL(KC_LALT), _______, _______, _______, _______, _______, KC_DEL, _______\
+                       LCTL(KC_LALT), _______, _______, _______, _SF_ENT, _______, KC_DEL, _______\
 ),
 /* RAISE
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -167,7 +168,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, LCTL(LALT(KC_DEL)), \
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                   _AS_L,   _AS_D,   _AS_U,   _AS_R,   XXXXXXX, XXXXXXX, \
-  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _CS_B,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _CA_B,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
                              _______, _______, _______, _______, _______,  _______, _______, _______ \
   )
 };
