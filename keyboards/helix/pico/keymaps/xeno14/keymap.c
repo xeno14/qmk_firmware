@@ -202,6 +202,11 @@ void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
   }
 }
 
+// assign Muhenkan/Henkan on Lower/Raise
+// c.f. https://okapies.hateblo.jp/entry/2019/02/02/133953
+static bool lower_pressed = false;
+static bool raise_pressed = false;
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QWERTY:
@@ -242,6 +247,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             //rgblight_mode(RGBLIGHT_MODE_SNAKE + 1);
           #endif
         }
+        lower_pressed = true;
+
         layer_on(_LOWER);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
       } else {
@@ -251,6 +258,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         TOG_STATUS = false;
         layer_off(_LOWER);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
+
+        //single press LOWER -> Henkan
+        if (lower_pressed) {
+            register_code(KC_MHEN);
+            unregister_code(KC_MHEN);
+        }
+        lower_pressed = false;
       }
       return false;
       break;
@@ -265,6 +279,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             //rgblight_mode(RGBLIGHT_MODE_SNAKE);
           #endif
         }
+        raise_pressed = true;
+
         layer_on(_RAISE);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
       } else {
@@ -274,6 +290,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_off(_RAISE);
         TOG_STATUS = false;
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
+
+        //single press RAISE -> Henkan
+        if (raise_pressed) {
+            register_code(KC_HENK);
+            unregister_code(KC_HENK);
+        }
+        raise_pressed = false;
       }
       return false;
       break;
@@ -328,6 +351,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           RGB_current_mode = rgblight_config.mode;
         }
       #endif
+      break;
+    default:
+      if (record->event.pressed) {
+        // reset the flag
+        lower_pressed = raise_pressed = false;
+      }
       break;
   }
   return true;
