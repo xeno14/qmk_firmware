@@ -21,6 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 // place overrides here
+#undef  TAPPING_TERM
+#define TAPPING_TERM 200
 
 #ifdef AUDIO_ENABLE
   #define STARTUP_SONG SONG(STARTUP_SOUND)

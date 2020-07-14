@@ -62,6 +62,8 @@ enum macro_keycodes {
 #define AS_UP       LALT(LSFT(KC_UP))
 #define AS_DWN      LALT(LSFT(KC_DOWN))
 #define ALT_F1      LALT(KC_F1)
+#define MSFTTAB      SFT_T(KC_TAB)   // mod tap https://github.com/qmk/qmk_firmware/blob/master/docs/keycodes.md#mod-tap-keys-idmod-tap-keys
+#define MCTLTAB      CTL_T(KC_TAB)
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -70,19 +72,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,-----------------------------------------.             ,-----------------------------------------.
    * |ESC/~ |   Q  |   W  |   E  |   R  |   T  |             |   Y  |   U  |   I  |   O  |   P  |  -   |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * | Ctrl |   A  |   S  |   D  |   F  |   G  |             |   H  |   J  |   K  |   L  |   ;  |  \   |
+   * |Ctl/TB|   A  |   S  |   D  |   F  |   G  |             |   H  |   J  |   K  |   L  |   ;  |  \   |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * |Shift |   Z  |   X  |   C  |   V  |   B  |             |   N  |   M  |   ,  |   .  |   /  |  '   |
    * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
-   * |Adjust| GUI  |AltCtl| Alt  |Shift |Lower |Space |Enter |Raise | Bksp |   =  |   `  |   [  |  ]   |
+   * |Adjust| GUI  |AltCtl| Alt  |Sft/TB|Lower |Space |Enter |Raise | Bksp |   =  |   `  |   [  |  ]   |
    * `-------------------------------------------------------------------------------------------------'
    */
 
 [_QWERTY] = LAYOUT( \
       KC_GESC, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                    KC_Y,  KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS, \
-      KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                    KC_H,  KC_J,    KC_K,    KC_L,    KC_SCLN, KC_BSLS, \
+      MCTLTAB, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                    KC_H,  KC_J,    KC_K,    KC_L,    KC_SCLN, KC_BSLS, \
       KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                    KC_N,  KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_QUOT, \
-      ADJUST,  KC_LGUI, LALTCTL, KC_LALT, KC_LSFT, LOWER, KC_SPC,  KC_ENT,  RAISE, KC_BSPC, KC_EQL,  KC_GRV,  KC_LBRC, KC_RBRC  \
+      ADJUST,  KC_LGUI, LALTCTL, KC_LALT, MSFTTAB, LOWER, KC_SPC,  KC_ENT,  RAISE, KC_BSPC, KC_EQL,  KC_GRV,  KC_LBRC, KC_RBRC  \
       ),
   /* Colemak
    * ,-----------------------------------------.             ,-----------------------------------------.
