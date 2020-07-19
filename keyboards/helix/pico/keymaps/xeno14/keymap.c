@@ -62,6 +62,8 @@ enum macro_keycodes {
 #define AS_UP       LALT(LSFT(KC_UP))
 #define AS_DWN      LALT(LSFT(KC_DOWN))
 #define ALT_F1      LALT(KC_F1)
+#define SFT_F1      LSFT(KC_F1)
+#define CS_F12      LCTL(LSFT(KC_F12))
 #define MSFTTAB      SFT_T(KC_TAB)   // mod tap https://github.com/qmk/qmk_firmware/blob/master/docs/keycodes.md#mod-tap-keys-idmod-tap-keys
 #define MCTLTAB      CTL_T(KC_TAB)
 
@@ -82,7 +84,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_QWERTY] = LAYOUT( \
       KC_GESC, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                    KC_Y,  KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS, \
-      MCTLTAB, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                    KC_H,  KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
+      KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                    KC_H,  KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, \
       KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                    KC_N,  KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_GRV, \
       ADJUST,  KC_LGUI, LALTCTL, KC_LALT, MSFTTAB, LOWER, KC_SPC,  KC_ENT,  RAISE, KC_BSPC, KC_EQL,  KC_BSLS, KC_LBRC, KC_RBRC  \
       ),
@@ -162,17 +164,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,-----------------------------------------.             ,-----------------------------------------.
    * | Reset|Alt F1|      |      |      |      |             |      |      |      |      |PrtScl| CAD  |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * |      |      |      |      |      |      |             |AlSf <|AlSf v|AlSf ^|AlSf >|      |      |
+   * |      |Sft F1|      |      |      |      |             |AlSf <|AlSf v|AlSf ^|AlSf >|      |      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * |      |      |      |      |      |      |             |      |      |      |      |      |      |
+   * |      |      |      |      |      |      |             |CSF12 |      |      |      |      |      |
    * |------+------+------+------+------+------+-------------+------+------+------+------+------+------|
    * |      |      |      |      |      |      |      |      |      |      |      |      |      |      |
    * `-------------------------------------------------------------------------------------------------'
    */
   [_ADJUST] =  LAYOUT( \
       RESET,   ALT_F1,   _______, _______, _______, _______,                   _______, _______, _______, _______,KC_PSCR, CAD,     \
-      _______, _______, _______, _______, _______, _______,                   AS_LFT,  AS_DWN,  AS_UP,   AS_RGT,  _______, _______, \
-      _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+      _______, SFT_F1,   _______, _______, _______, _______,                   AS_LFT,  AS_DWN,  AS_UP,   AS_RGT,  _______, _______, \
+      _______, _______, _______, _______, _______, _______,                    CS_F12, _______, _______, _______, _______, _______, \
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______  \
       )
 };
