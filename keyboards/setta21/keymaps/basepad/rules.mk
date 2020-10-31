@@ -1,0 +1,5 @@
+RGBLIGHT_ENABLE = no
+RGB_MATRIX_ENABLE = no
+OLED_DRIVER_ENABLE = yes
+
+SRC += ./lib/basepad.c
