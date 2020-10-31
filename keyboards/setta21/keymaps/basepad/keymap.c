@@ -1,5 +1,5 @@
 #include QMK_KEYBOARD_H
-#include "keymap_jp.h"
+// #include "keymap_jp.h"
 
 
 #ifdef RGBLIGHT_ENABLE
@@ -22,32 +22,27 @@ enum layer_number {
 };
 
 enum custom_keycodes {
-  SEND_STERING = SAFE_RANGE,
-  NEXT_INPUT_BASE_TYPE,
-  NEXT_OUTPUT_BASE_TYPE,
-
-  RGB_RST,
-  SEND_SUM,
-  SEND_AVE,
-  SEND_CIF,
-  SEND_MAX,
-  SEND_MIN
+  BP_ENT = SAFE_RANGE,
+  BP_IN,
+  BP_OUT,
+  BP_ESC,
+  BP_DEL
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT_numpad_6x4(
       //,-----------------------------------|
-           KC_ESC,   KC_F2,  JP_EQL,  KC_DEL,
+            KC_D,   KC_E,   KC_F,   BP_ESC,
       //|--------+--------+--------+--------|
-          KC_NLCK, KC_PSLS, KC_PAST, KC_PMNS,
+            KC_A,   KC_B,   KC_C,   BP_OUT,
       //|--------+--------+--------+--------|
-            KC_P7,   KC_P8,   KC_P9,
+            KC_7,   KC_8,   KC_9,
       //|--------+--------+--------+--------|
-            KC_P4,   KC_P5,   KC_P6, KC_PPLS,
+            KC_4,   KC_5,   KC_6,   BP_IN,
       //|--------+--------+--------+--------|
-            KC_P1,   KC_P2,   KC_P3,
+            KC_1,   KC_2,   KC_3,
       //|--------+--------+--------+--------|
-      KC_1, KC_2, KC_1
+            KC_0,           BP_DEL, BP_ENT
       //`-----------------------------------'
   )
 };
@@ -58,93 +53,73 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //   return update_tri_layer_state(state, _ARROW, _MACRO, _ADJUST);
 // }
 
-int RGB_current_mode;
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  bool result = false;
-  if (record->event.pressed) {
-     #ifdef OLED_DRIVER_ENABLE
-        oled_timer = timer_read32();
-     #endif
-  }
-  switch (keycode) {
-    case SEND_SUM:
-      if (record->event.pressed) {
-        SEND_STRING("_SUM*");
-      }
-      break;
-    case SEND_AVE:
-      if (record->event.pressed) {
-        SEND_STRING("_AVERAGE*");
-      }
-      break;
-    case SEND_CIF:
-      if (record->event.pressed) {
-        SEND_STRING("_COUNTIF*");
-      }
-      break;
-    case SEND_MAX:
-      if (record->event.pressed) {
-        SEND_STRING("_MAX*");
-      }
-      break;
-    case SEND_MIN:
-      if (record->event.pressed) {
-        SEND_STRING("_MIN*");
-      }
-      break;
-    #ifdef RGBLIGHT_ENABLE
-      case RGB_MOD:
-          if (record->event.pressed) {
-            rgblight_mode(RGB_current_mode);
-            rgblight_step();
-            RGB_current_mode = rgblight_config.mode;
-          }
-        break;
-      case RGB_RST:
-          if (record->event.pressed) {
-            eeconfig_update_rgblight_default();
-            rgblight_enable();
-            RGB_current_mode = rgblight_config.mode;
-          }
-        break;
-    #endif
-    default:
-      result = true;
-      break;
-  }
+// When add source files to SRC in rules.mk, you can use functions.
+void basepad_input(uint16_t);
+const char* basepad_get_output(void);
+const char* basepad_get_buffer2(void);
+const char* basepad_get_buffer10(void);
+const char* basepad_get_buffer16(void);
+void basepad_delete(void);
+void basepad_clear(void);
+void basepad_next_input_base_type(void);
+void basepad_next_output_base_type(void);
 
-  return result;
-}
-
+bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+    bool result = false;  // don't send key by default
+    if (record->event.pressed) {
 #ifdef OLED_DRIVER_ENABLE
-oled_rotation_t oled_init_user(oled_rotation_t rotation) { return OLED_ROTATION_0; }
-
-
-void render_layer_state(void) {
-    oled_write_P(PSTR("LAYER: "), false);
-    // oled_write_P(PSTR(" Arrow "), layer_state_is(_ARROW));
-    // oled_write_P(PSTR(" Macro "), layer_state_is(_MACRO));
-}
-
-void render_keylock_status(uint8_t led_usb_state) {
-    oled_write_P(PSTR("NumLock"), led_usb_state & (1 << USB_LED_NUM_LOCK));
-    oled_write_P(PSTR("              "), false);
-}
-
-void render_layer_messages(void) {
-    oled_write_P(PSTR("Setta21                For Your Good Job. "), false);
-}
-
-
-void render_status(void) {
-    /* Show Keyboard Layout  */
-    render_layer_messages();
-    render_keylock_status(host_keyboard_leds());
-    render_layer_state();
-}
-
-void oled_task_user(void) {
-    render_status();  // Renders the current keyboard state (layer, lock, caps, scroll, etc)
-}
-
+        oled_timer = timer_read32();
 #endif
+    }
+    switch (keycode) {
+        case BP_IN:
+            basepad_next_input_base_type();
+            break;
+        case BP_OUT:
+            basepad_next_output_base_type();
+            break;
+        case BP_ENT:
+            send_string(basepad_get_output());
+            basepad_clear();
+            result = true;
+            break;
+        case BP_ESC:
+            basepad_clear();
+            break;
+        case BP_DEL:
+            basepad_delete();
+            break;
+        default:
+            basepad_input(keycode);
+            break;
+    }
+    return result;
+}
+
+//SSD1306 OLED update loop, make sure to add #define SSD1306OLED in config.h
+// #ifdef SSD1306OLED
+
+// // void matrix_scan_user(void) {
+// //    iota_gfx_task();
+// // }
+
+// void matrix_render_user(struct CharacterMatrix *matrix) {
+//     matrix_write_ln(matrix, basepad_get_buffer2());
+//     matrix_write_ln(matrix, basepad_get_buffer10());
+//     matrix_write_ln(matrix, basepad_get_buffer16());
+// }
+
+// void matrix_update(struct CharacterMatrix *dest, const struct CharacterMatrix *source) {
+//   if (memcmp(dest->display, source->display, sizeof(dest->display))) {
+//     memcpy(dest->display, source->display, sizeof(dest->display));
+//     dest->dirty = true;
+//   }
+// }
+
+// void iota_gfx_task_user(void) {
+//   struct CharacterMatrix matrix;
+//   matrix_clear(&matrix);
+//   matrix_render_user(&matrix);
+//   matrix_update(&display, &matrix);
+// }
+// #endif//SSD1306OLED
