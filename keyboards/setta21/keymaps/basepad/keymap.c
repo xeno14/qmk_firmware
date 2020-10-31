@@ -1,6 +1,9 @@
 #include QMK_KEYBOARD_H
-// #include "keymap_jp.h"
 
+#include <string.h>
+#ifdef SSD1306OLED
+  #include "ssd1306.h"
+#endif
 
 #ifdef RGBLIGHT_ENABLE
 //Following line allows macro to read current RGB settings
@@ -97,29 +100,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 }
 
 //SSD1306 OLED update loop, make sure to add #define SSD1306OLED in config.h
-// #ifdef SSD1306OLED
+#ifdef SSD1306OLED
 
-// // void matrix_scan_user(void) {
-// //    iota_gfx_task();
-// // }
+void matrix_scan_user(void) {
+   iota_gfx_task();
+}
 
-// void matrix_render_user(struct CharacterMatrix *matrix) {
-//     matrix_write_ln(matrix, basepad_get_buffer2());
-//     matrix_write_ln(matrix, basepad_get_buffer10());
-//     matrix_write_ln(matrix, basepad_get_buffer16());
-// }
+void matrix_render_user(struct CharacterMatrix *matrix) {
+    matrix_write_ln(matrix, basepad_get_buffer2());
+    matrix_write_ln(matrix, basepad_get_buffer10());
+    matrix_write_ln(matrix, basepad_get_buffer16());
+}
 
-// void matrix_update(struct CharacterMatrix *dest, const struct CharacterMatrix *source) {
-//   if (memcmp(dest->display, source->display, sizeof(dest->display))) {
-//     memcpy(dest->display, source->display, sizeof(dest->display));
-//     dest->dirty = true;
-//   }
-// }
+void matrix_update(struct CharacterMatrix *dest, const struct CharacterMatrix *source) {
+  if (memcmp(dest->display, source->display, sizeof(dest->display))) {
+    memcpy(dest->display, source->display, sizeof(dest->display));
+    dest->dirty = true;
+  }
+}
 
-// void iota_gfx_task_user(void) {
-//   struct CharacterMatrix matrix;
-//   matrix_clear(&matrix);
-//   matrix_render_user(&matrix);
-//   matrix_update(&display, &matrix);
-// }
-// #endif//SSD1306OLED
+void iota_gfx_task_user(void) {
+  struct CharacterMatrix matrix;
+  matrix_clear(&matrix);
+  matrix_render_user(&matrix);
+  matrix_update(&display, &matrix);
+}
+#endif//SSD1306OLED
