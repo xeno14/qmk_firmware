@@ -49,7 +49,7 @@ enum macro_keycodes {
 #define CS_F12      LCTL(LSFT(KC_F12))
 #define MSFTTAB      SFT_T(KC_TAB)   // mod tap https://github.com/qmk/qmk_firmware/blob/master/docs/keycodes.md#mod-tap-keys-idmod-tap-keys
 #define MCTLTAB      CTL_T(KC_TAB)
-#define CS_B        LCTL(LSFT(KC_B))
+#define CS_B        LCTL(LSFT(KC_B))  // Ctrl+Shift+B = VSCode build command
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -95,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, SFT_F1,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       NUMBER, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    CS_B,                       NUMBER, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_LALT,   LOWER,  KC_SPC,     KC_ENT,  RAISE,  KC_BSPC \
                                       //`--------------------------'  `--------------------------'
